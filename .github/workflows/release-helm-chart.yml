@@ -1,4 +1,4 @@
-name: Release Helm Chart
+name: Release Helm Chart and Build Pages
 
 on:
   workflow_dispatch:
@@ -24,3 +24,24 @@ jobs:
           charts_dir: ./
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  page-build-deployment:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Build Pages
+        run: |
+          echo "Insert your static site generator build commands here"
+          # e.g. npm ci && npm run build
+          # or hugo, jekyll build etc.
+
+      - name: Deploy Pages
+        run: |
+          # Add git commit & push commands here if needed
+          echo "Deploy the updated pages here"
