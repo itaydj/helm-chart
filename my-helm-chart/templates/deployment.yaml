@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    test: "test"
 spec:
   replicas: {{ .Values.deployment.replicaCount }}
   selector:
