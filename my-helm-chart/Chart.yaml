@@ -1,4 +1,4 @@
 apiVersion: v2
 name: microservice
-version: 1.0.8
+version: 1.0.9
 description: A generic Helm chart for deploying microservices
