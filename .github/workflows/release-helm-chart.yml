@@ -3,13 +3,11 @@ name: Release Helm Chart and Build Pages
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pages: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repo
@@ -31,26 +29,39 @@ jobs:
   page-build-deployment:
     needs: release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
+      # Checkout source branch where package.json and package-lock.json live
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          ref: main  # Change this if your source branch is different
+
+      # Install dependencies and build static site
+      - name: Install dependencies and build site
+        run: |
+          npm ci
+          npm run build
+
+      # Checkout gh-pages branch to update the site
       - name: Checkout gh-pages branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Static Site
+      # Clear old files and copy new build output (adjust the build output folder if needed)
+      - name: Update gh-pages content
         run: |
-          # Replace these with your actual static site build commands
-          npm ci
-          npm run build
+          rm -rf ./*
+          cp -r ./path/to/build/output/* ./
 
-      - name: Deploy Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Commit and push the changes to gh-pages branch
+      - name: Commit and push changes
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
           git add .
-          git commit -m "Deploy updated pages [skip ci]" || echo "No changes to commit"
+          git commit -m "Update static site"
           git push origin gh-pages
