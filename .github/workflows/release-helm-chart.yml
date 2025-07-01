@@ -23,7 +23,7 @@ jobs:
       - name: Run Chart Releaser
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: ./my-helm-chart
+          charts_dir: my-helm-chart
           pages_branch: gh-pages
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
