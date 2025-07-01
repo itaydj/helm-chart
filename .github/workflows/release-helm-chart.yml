@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: 'main'
+          fetch-depth: 0
 
       - name: Setup Helm
         uses: azure/setup-helm@v3
@@ -25,7 +25,7 @@ jobs:
       - name: Run Chart Releaser
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: my-helm-chart
+          charts_dir: .
           pages_branch: gh-pages
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
