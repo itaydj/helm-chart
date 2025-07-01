@@ -1,0 +1,23 @@
+deployment:
+  image:
+    repository: quay.io/idan-chetrit/my-app
+    tag: latest
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2048Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+
+service:
+  port: 80
+  targetPort: 3000
+
+env:
+  AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+  AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+  ORG: "Test"
+  PORT: "80"
