@@ -26,7 +26,7 @@ jobs:
           charts_dir: ./my-helm-chart
           pages_branch: gh-pages
         env:
-          CR_TOKEN: ${{ secrets.CR_TOKEN }}  # Use a PAT with repo scope here
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   page-build-deployment:
     needs: release
